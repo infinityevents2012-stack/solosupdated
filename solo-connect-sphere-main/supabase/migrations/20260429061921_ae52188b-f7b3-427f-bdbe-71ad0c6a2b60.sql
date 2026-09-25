@@ -1,0 +1,1 @@
+grant execute on function public.is_conversation_participant(uuid, uuid) to authenticated;

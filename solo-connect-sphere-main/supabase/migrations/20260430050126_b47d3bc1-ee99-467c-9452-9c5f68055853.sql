@@ -1,0 +1,1 @@
+revoke execute on function public.is_blocked_between(uuid, uuid) from public, anon, authenticated;
