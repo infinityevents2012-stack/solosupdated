@@ -99,14 +99,22 @@ function timingSafeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
-function buildWhatsAppUrl(userPhone: string, otp: string): string | null {
+/*function buildWhatsAppUrl(userPhone: string, otp: string): string | null {
   if (!VERIFICATION_WHATSAPP_NUMBER) return null;
   const message =
     `SoloS verification request\n` +
     `User phone: ${userPhone}\n` +
     `OTP: ${otp}`;
   return `https://wa.me/${VERIFICATION_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}*/
+
+function buildWhatsAppUrl(userPhone: string, otp: string): string | null {
+  const target = digitsOnly(userPhone);
+  if (!target) return null;
+  const message = `Your SoloS verification code is: ${otp}\nIt expires in 5 minutes.`;
+  return `https://wa.me/${target}?text=${encodeURIComponent(message)}`;
 }
+
 
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {

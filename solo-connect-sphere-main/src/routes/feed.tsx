@@ -8,12 +8,25 @@ import { posts as initialPosts, stories, type Post } from "@/lib/mock-data";
 import { useAuth } from "@/lib/store";
 
 export const Route = createFileRoute("/feed")({
-  beforeLoad: () => {
+  /*beforeLoad: () => {
     if (typeof window !== "undefined") {
       const raw = window.localStorage.getItem("solos-auth");
       if (!raw || !JSON.parse(raw)?.state?.isAuthenticated) {
         throw redirect({ to: "/" });
       }
+    }
+  },*/
+  beforeLoad: () => {
+    if (typeof window !== "undefined") {
+      const raw = window.localStorage.getItem("solos-auth");
+      const parsed = raw ? JSON.parse(raw) : null;
+      console.log("[feed beforeLoad] raw solos-auth:", parsed);
+      if (!raw || !parsed?.state?.isAuthenticated) {
+        console.log("[feed beforeLoad] redirecting to / — not authenticated");
+        throw redirect({ to: "/" });
+      }
+    } else {
+      console.log("[feed beforeLoad] running on server");
     }
   },
   component: Feed,
